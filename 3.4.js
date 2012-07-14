@@ -10,10 +10,33 @@ window.onload = function(){
 	var game = new Game(1026, 1026);
 	game.fps = 120;
 	
+	/*var rand = function(num){ return (Math.random() * num ) | 0;}
+	
+	var Grid = enchant.Class.create(Group, {
+	initialize : function() { 
+		Group.call(this);
+		for(var i = 0; i < 4; i++){
+			var leftLine = new Line((i % 4) * 80, 0);
+			this.addChild(leftLine);
+			var rightLine = new Line((i % 4) * 80 + 79, 0);
+			this.addChild(rightLine);
+			var topLine = new Line(160, (i % 4) * 80 -160);
+			topLine.rotate(90);
+			this.addChild(topLine);
+			var bottomLine = new Line (160, (i %4) * 80 - 81);
+			bottomLine.rotate(90);
+			this.addChild(bottomLine);
+			}
+		}
+	});*/
 	game.preload('http://blog-imgs-54.fc2.com/g/t/v/gtvsa/IMG.jpg' ,
 				'http://blog-imgs-54.fc2.com/g/t/v/gtvsa/pazzle.jpg');
+				
 							
 		game.onload = function() {
+	
+	
+	
 	//背景の生成
 	var bg = new Sprite(1023, 1026);
 	var maptip = game.assets['http://blog-imgs-54.fc2.com/g/t/v/gtvsa/pazzle.jpg'];
@@ -25,6 +48,38 @@ window.onload = function(){
 	}
 	bg.image = image;
 	game.rootScene.addChild(bg);
+
+		//サーフェイスの色指定メソッドの追加
+	Surface.prototype.setColor = function(color) {
+		this.context.strokeStyle = color;
+		this.context.fillStyle 	 = color;
+	};
+	
+	//サーフェイスに四角形の描画メソッドの追加
+	Surface.prototype.drawRect = function(x, y, w, h) {
+		this.context.beginPath();
+		this.context.rect(x, y, w, h);
+		this.context.stroke();
+	};
+	
+	//サーフェイスの追加
+	game.addSurface = function(type, color, x, y) {
+		//サーフェイスの生成
+		var surface = new Surface(1000, 1000);
+		
+		surface.setColor(color);
+		if(type ==0) surface.drawRect(0, 0,900, 900);
+		
+		//スプライトの作成
+		
+		var sprite = new Sprite(1000, 1000);
+		sprite.image=surface;
+		sprite.x = x;
+		sprite.y = y;
+		game.rootScene.addChild(sprite);
+	};
+	game.addSurface(0, "black", 50, 50 );
+	
 	//キャラクターの生成
 	var mary = new Sprite(380, 370);
 	mary.image =game.assets['http://blog-imgs-54.fc2.com/g/t/v/gtvsa/IMG.jpg'];
@@ -97,6 +152,12 @@ window.onload = function(){
 			mary.toY = e.x - 190 ;
 		});
 	};
+	//var grid = new Grid();
+	//game.rootScene.addChild(grid);
+		
+			
 
+	
+		
 	game.start();
 };
