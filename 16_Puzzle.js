@@ -117,7 +117,7 @@ window.onload = function () {
                             tile[i - 1][j] = this.id;
                             this.y -= TILE_HEIGHT;
                             tile[i][j] = -1;
-                        } else if(array = ){
+                        //} else if(array = ){
                         
                         }
                     });
