@@ -1,5 +1,5 @@
 ﻿//定数化
-var IMG = "iMG.jpg";
+var IMG = "IMG.jpg";
 var DIV = 4; //divide
 var GAME_WIDTH = 320;
 var GAME_HEIGHT = 320;
