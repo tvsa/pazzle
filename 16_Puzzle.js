@@ -1,5 +1,5 @@
 ﻿//定数化
-var IMG = "IMG.jpg";
+var IMG = "iMG.jpg";
 var DIV = 4; //divide
 var GAME_WIDTH = 320;
 var GAME_HEIGHT = 320;
@@ -20,42 +20,6 @@ fc = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
 fc.shuffle();
 
 enchant();
-/*enchant.effect = {sprite };
-/**ある対象ノードに対してフレームごとの処理をする仕組み*/
-//enchant.effect.Action = enchant.Class.create({
-    /*フレームごとの処理
-    ＊@param {Node} targetNode 対象となるノード
-    ＊@param {function} tickFunc フレームごとに実行される関数
-    */
-    /*initialize: funciton(targetNode, tickFunc){
-        this.targetNode = targetNode;
-        this.tickFunc = tickFunc;
-        this.frame = 0;
-
-        if(! targetNode.queue){
-        //対象となるノードにキューがなければ作る
-            targetNode.queue = [];
-            targertNode.addEventListener('enterframe', function(){
-            //フレームごとの処理
-            if(taragetNode.queue &&0 < targetNode.queue.length){
-                //キューが空でなければ最初のアクションを実行
-                targetNode.queue[0].tick();
-            }else{
-                //キューが空ならフレームごとの処理を終了
-                targetNode.removeEventListener('enterframe', arguments.callee);
-                delete targetNode.queue;
-                }
-    });
-    }
-    //キューに自身を登録する
-    targetNode.queue.push(this);
-    },
-    /*　フレームごとの処理*/
-    /*tick: function(){
-        this.tickFunc(this);
-        this.frame++;
-        }
-    });*/
 var tile = new Array(DIV);
 for (var i = 0; i < DIV; i++) {
     tile[i] = new Array(DIV);
@@ -74,7 +38,8 @@ var Girl = enchant.Class.create(enchant.Sprite, {
 window.onload = function () {
     var game = new Game(320, 320);
     game.fps = 16;
-    game.preload(IMG);
+    game.time = 0;
+    game.preload(IMG); //, 'start.png', 'end.png');
     //Sprite一枚一枚に振ったID
 
     game.onload = function () {
@@ -86,15 +51,6 @@ window.onload = function () {
                     tile[y][x] = -1; //空白
                 } else {
                     tile[y][x] = fc[y * DIV + x];
-
-                    /*$('.piece').click(function () {
-                    });
-
-                    var piece = new Sprite();
-                    piece.addEventListener(TOUCH_START, function () {
-                        var no = fc;
-                        if ()
-                    });*/
 
                     var girl = new Girl(x, y, game.assets[IMG], tile[y][x]);
                     game.rootScene.addChild(girl);
@@ -117,14 +73,28 @@ window.onload = function () {
                             tile[i - 1][j] = this.id;
                             this.y -= TILE_HEIGHT;
                             tile[i][j] = -1;
-                        //} else if(array = ){
-                        
                         }
+                        //ゲームクリアなのか判定
+                        for (var i = 0; i < DIV; i++) {
+                            for (var j = 0; j < DIV; j++) {
+                                var index = i * DIV + j;
+                                if (index /*!= tile[i][j]*/ && fc[fc.length - 1] != tile[i][j]) {
+                                    return;
+                                }
+                            }
+                        }
+                        game.end(1000000 - game.time, (game.time / game.fps).toFixed(2) + "秒でクリア！");
+
+                        console.log(fc);
+
                     });
+
                 }
             }
         }
-       
+
+
+
     };
     game.start();
 };
